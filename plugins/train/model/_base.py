@@ -376,7 +376,7 @@ class ModelBase():
         """ Build and return Optimizer """
         opt_kwargs = dict(lr=lr, beta_1=beta_1, beta_2=beta_2)
         if (self.config.get("clipnorm", False) and
-                keras.backend.backend() != "plaidml.keras.backend"):
+                True):
             # NB: Clipnorm is ballooning VRAM usage, which is not expected behavior
             # and may be a bug in Keras/TF.
             # PlaidML has a bug regarding the clipnorm parameter
@@ -605,7 +605,7 @@ class VRAMSavings():
         logger.debug("Initializing %s: (pingpong: %s, optimizer_savings: %s, "
                      "memory_saving_gradients: %s)", self.__class__.__name__,
                      pingpong, optimizer_savings, memory_saving_gradients)
-        self.is_plaidml = keras.backend.backend() == "plaidml.keras.backend"
+        self.is_plaidml = False
         self.pingpong = self.set_pingpong(pingpong)
         self.optimizer_savings = self.set_optimizer_savings(optimizer_savings)
         self.memory_saving_gradients = self.set_gradient_type(memory_saving_gradients)
@@ -623,7 +623,7 @@ class VRAMSavings():
 
     def set_optimizer_savings(self, optimizer_savings):
         """ Disable optimizer savings for plaidML users """
-        if optimizer_savings and self.is_plaidml == "plaidml.keras.backend":
+        if optimizer_savings and False":
             logger.warning("Optimizer Savings not supported on plaidML. Disabling")
             optimizer_savings = False
         logger.debug("optimizer_savings: %s", optimizer_savings)
