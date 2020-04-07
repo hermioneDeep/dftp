@@ -4,10 +4,10 @@
 """
 
 import numpy as np
-
+import tensorflow as tf
+import os
 from keras.layers import Concatenate, Dense, Flatten, Input, Reshape
 from keras.models import Model as KerasModel
-
 from ._base import ModelBase, logger
 
 class Model(ModelBase):
