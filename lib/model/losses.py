@@ -9,14 +9,14 @@ from __future__ import absolute_import
 
 import logging
 
-import keras.backend as K
-from keras.layers import Lambda, concatenate
+import tensorflow.keras.backend as K
+from tensorflow.keras.layers import Lambda, concatenate
 import numpy as np
 import tensorflow as tf
 from tensorflow.distributions import Beta
 
 from .normalization import InstanceNormalization
-if K.backend() == "plaidml.keras.backend":
+if K.backend() == "plaidml.tensorflow.keras.backend":
     from plaidml.op import extract_image_patches
 else:
     from tensorflow import extract_image_patches  # pylint: disable=ungrouped-imports

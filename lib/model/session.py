@@ -4,9 +4,9 @@
 import logging
 
 import tensorflow as tf
-from keras.layers import Activation
+from tensorflow.keras.layers import Activation
 from tensorflow.python import errors_impl as tf_error  # pylint:disable=no-name-in-module
-from keras.models import load_model as k_load_model, Model
+from tensorflow.keras.models import load_model as k_load_model, Model
 import numpy as np
 
 from lib.utils import get_backend, FaceswapError

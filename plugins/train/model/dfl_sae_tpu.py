@@ -6,8 +6,8 @@
 import numpy as np
 import tensorflow as tf
 import os
-from keras.layers import Concatenate, Dense, Flatten, Input, Reshape
-from keras.models import Model as KerasModel
+from tensorflow.keras.layers import Concatenate, Dense, Flatten, Input, Reshape
+from tensorflow.keras import Model as KerasModel
 from ._base import ModelBase, logger
 
 try:

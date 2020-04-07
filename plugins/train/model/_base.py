@@ -11,12 +11,12 @@ import time
 
 from concurrent import futures
 
-import keras
-from keras import losses
-from keras import backend as K
-from keras.layers import Input
-from keras.models import load_model, Model
-from keras.utils import get_custom_objects, multi_gpu_model
+import tensorflow.keras
+from tensorflow.keras import losses
+from tensorflow.keras import backend as K
+from tensorflow.python.keras.layers import Input
+from tensorflow.python.keras.models import load_model, Model
+from tensorflow.python.keras.utils import get_custom_objects, multi_gpu_model
 
 from lib.serializer import get_serializer
 from lib.model.backup_restore import Backup

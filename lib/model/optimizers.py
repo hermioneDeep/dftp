@@ -5,8 +5,8 @@
 
 import logging
 
-from keras import backend as K
-from keras.optimizers import Adam as KerasAdam
+from tensorflow.keras import backend as K
+from tensorflow.keras.optimizers import Adam as KerasAdam
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

@@ -10,13 +10,13 @@ import sys
 import inspect
 
 import tensorflow as tf
-import keras.backend as K
+import tensorflow.keras.backend as K
 
-from keras.engine import InputSpec, Layer
-from keras.utils import conv_utils
-from keras.utils.generic_utils import get_custom_objects
-from keras import initializers
-from keras.layers.pooling import _GlobalPooling2D
+from tensorflow.python.keras.engine import InputSpec, Layer
+from tensorflow.python.keras.utils import conv_utils
+from tensorflow.python.keras.utils.generic_utils import get_custom_objects
+from tensorflow.python.keras import initializers
+from tensorflow.python.keras.layers.pooling import GlobalPooling2D
 
 if K.backend() == "plaidml.keras.backend":
     from lib.plaidml_utils import pad
@@ -354,7 +354,7 @@ class ReflectionPadding2D(Layer):
         return dict(list(base_config.items()) + list(config.items()))
 
 
-class GlobalMinPooling2D(_GlobalPooling2D):
+class GlobalMinPooling2D(GlobalPooling2D):
     """Global minimum pooling operation for spatial data.
     # Arguments
         data_format: A string,
@@ -387,7 +387,7 @@ class GlobalMinPooling2D(_GlobalPooling2D):
         return pooled
 
 
-class GlobalStdDevPooling2D(_GlobalPooling2D):
+class GlobalStdDevPooling2D(GlobalPooling2D):
     """Global standard deviation pooling operation for spatial data.
     # Arguments
         data_format: A string,

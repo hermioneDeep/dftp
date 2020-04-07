@@ -4,17 +4,17 @@
         the original https://www.reddit.com/r/deepfakes/ code sample + contribs
         dfaker: https://github.com/dfaker/df
         shoanlu GAN: https://github.com/shaoanlu/faceswap-GAN"""
-
 import logging
 import tensorflow as tf
-import keras.backend as K
+import tensorflow.keras.backend as K
 
-from keras.layers import (add, Add, BatchNormalization, concatenate, Lambda, regularizers,
+from tensorflow.python.keras.layers import (add, Add, BatchNormalization, concatenate, Lambda,
                           Permute, Reshape, SeparableConv2D, Softmax, UpSampling2D)
-from keras.layers.advanced_activations import LeakyReLU
-from keras.layers.convolutional import Conv2D
-from keras.layers.core import Activation
-from keras.initializers import he_uniform, VarianceScaling
+import tensorflow.keras.regularizers
+from tensorflow.python.keras.layers.advanced_activations import LeakyReLU
+from tensorflow.python.keras.layers.convolutional import Conv2D
+from tensorflow.python.keras.layers.core import Activation
+from tensorflow.python.keras.initializers import he_uniform, VarianceScaling
 from .initializers import ICNR, ConvolutionAware
 from .layers import PixelShuffler, SubPixelUpscaling, ReflectionPadding2D, Scale
 from .normalization import GroupNormalization, InstanceNormalization

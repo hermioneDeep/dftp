@@ -10,7 +10,7 @@ from time import sleep
 
 import cv2
 import tensorflow as tf
-from keras.backend.tensorflow_backend import set_session
+from tensorflow.python.keras.backend import set_session
 
 from lib.image import read_image
 from lib.keypress import KBHit
