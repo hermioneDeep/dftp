@@ -10,7 +10,6 @@ from keras.models import Model as KerasModel
 
 from ._base import ModelBase, logger
 
-
 class Model(ModelBase):
     """ Low Memory version of Original Faceswap Model """
     def __init__(self, *args, **kwargs):
