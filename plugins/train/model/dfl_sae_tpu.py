@@ -11,8 +11,9 @@ from keras.models import Model as KerasModel
 from ._base import ModelBase, logger
 
 try:
+ global TPU_ADDRESS
  device_name = os.environ['COLAB_TPU_ADDR']
- global TPU_ADDRESS = 'grpc://' + device_name
+ TPU_ADDRESS = 'grpc://' + device_name
  print('Found TPU at: {}'.format(TPU_ADDRESS))
 except KeyError:
  print('TPU not found')
