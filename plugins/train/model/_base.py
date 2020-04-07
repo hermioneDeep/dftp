@@ -623,7 +623,7 @@ class VRAMSavings():
 
     def set_optimizer_savings(self, optimizer_savings):
         """ Disable optimizer savings for plaidML users """
-        if optimizer_savings and False":
+        if optimizer_savings and False:
             logger.warning("Optimizer Savings not supported on plaidML. Disabling")
             optimizer_savings = False
         logger.debug("optimizer_savings: %s", optimizer_savings)
