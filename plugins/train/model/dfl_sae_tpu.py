@@ -10,6 +10,13 @@ from keras.layers import Concatenate, Dense, Flatten, Input, Reshape
 from keras.models import Model as KerasModel
 from ._base import ModelBase, logger
 
+try:
+ device_name = os.environ['COLAB_TPU_ADDR']
+ global TPU_ADDRESS = 'grpc://' + device_name
+ print('Found TPU at: {}'.format(TPU_ADDRESS))
+except KeyError:
+ print('TPU not found')
+
 class Model(ModelBase):
     """ Low Memory version of Original Faceswap Model """
     def __init__(self, *args, **kwargs):
@@ -94,6 +101,7 @@ class Model(ModelBase):
 
     def encoder_df(self):
         """ DFL SAE DF Encoder Network"""
+        global TPU_ADDRESS
         input_ = Input(shape=self.input_shape)
         dims = self.input_shape[-1] * self.config["encoder_dims"]
         lowest_dense_res = self.input_shape[0] // 16
@@ -138,6 +146,7 @@ class Model(ModelBase):
 
     def decoder(self):
         """ DFL SAE Decoder Network"""
+        global TPU_ADDRESS
         if self.architecture == "liae":
             input_shape = np.array(self.networks["intermediate"].output_shapes[0][1:]) * (1, 1, 2)
         else:
