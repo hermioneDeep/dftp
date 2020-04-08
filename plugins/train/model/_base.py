@@ -791,7 +791,7 @@ class NNMeta():
         self.name = self.set_name()
         self.network = network
         self.is_output = is_output
-        self.network.name = self.name
+        self.network._name = self.name
         self.config = network.get_config()  # For pingpong restore
         self.weights = network.get_weights()  # For pingpong restore
         logger.debug("Initialized %s", self.__class__.__name__)
