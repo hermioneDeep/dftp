@@ -116,11 +116,7 @@ class Model(ModelBase):
         var_x = Reshape((lowest_dense_res, lowest_dense_res, self.ae_dims))(var_x)
         var_x = self.blocks.upscale(var_x, self.ae_dims)
         gpu_model = KerasModel(input_, var_x)
-        tpu_model = tf.contrib.tpu.keras_to_tpu_model(
-            gpu_model,
-            strategy=tf.contrib.tpu.TPUDistributionStrategy(
-                tf.contrib.cluster_resolver.TPUClusterResolver(TPU_ADDRESS)))
-        return tpu_model
+        return gpu_model
 
     def encoder_liae(self):
         """ DFL SAE LIAE Encoder Network """
@@ -200,9 +196,5 @@ class Model(ModelBase):
                                        name="mask_out")
             outputs.append(var_y)
         gpu_model = KerasModel(input_, outputs=outputs)
-        tpu_model = tf.contrib.tpu.keras_to_tpu_model(
-            gpu_model,
-            strategy=tf.contrib.tpu.TPUDistributionStrategy(
-                tf.contrib.cluster_resolver.TPUClusterResolver(TPU_ADDRESS)))
-        return tpu_model
+        return gpu_model
         
