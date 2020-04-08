@@ -6,7 +6,7 @@
 import logging
 
 from tensorflow.keras import backend as K
-from tensorflow.keras.optimizers import Adam as KerasAdam
+from tensorflow.python.keras.optimizer_v2 import adam as KerasAdam
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -35,7 +35,7 @@ class Adam(KerasAdam):
         self.updates = [K.update_add(self.iterations, 1)]
 
         lr = self.lr
-        if self.decay > 0: #im not sure
+        if self.initial_decay > 0:
             lr = lr * (1. / (1. + self.decay * K.cast(self.iterations,
                                                       K.dtype(self.decay))))
 
