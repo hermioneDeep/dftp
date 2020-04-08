@@ -35,7 +35,7 @@ class Adam(KerasAdam):
         self.updates = [K.update_add(self.iterations, 1)]
 
         lr = self.lr
-        if self.initial_decay > 0:
+        if self.decay > 0: #im not sure
             lr = lr * (1. / (1. + self.decay * K.cast(self.iterations,
                                                       K.dtype(self.decay))))
 
