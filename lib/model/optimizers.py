@@ -7,7 +7,7 @@ import logging
 
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam as KerasAdam
-
+import tensorflow as tf
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
@@ -29,7 +29,7 @@ class Adam(KerasAdam):
         retval = False if K.backend() != "tensorflow" else cpu_mode
         logger.debug("Optimizer CPU Mode set to %s", retval)
         return retval
-
+    @tf.function
     def get_updates(self, loss, params):
         grads = self.get_gradients(loss, params)
         self.updates = [K.update_add(self.iterations, 1)]
