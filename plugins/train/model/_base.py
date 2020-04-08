@@ -366,7 +366,7 @@ class ModelBase():
 
         for side, model in self.predictors.items():
             loss = Loss(model.inputs, model.outputs)
-            model.compile(optimizer=optimizer, loss=loss.funcs)
+            model.compile(optimizer='adam', loss=loss.funcs)
             if initialize:
                 self.state.add_session_loss_names(side, loss.names)
                 self.history[side] = list()
