@@ -11,6 +11,7 @@ import inspect
 
 import tensorflow as tf
 import tensorflow.keras.backend as K
+import keras.backend as KO
 
 from tensorflow.python.keras.engine import InputSpec, Layer
 from tensorflow.python.keras.utils import conv_utils
@@ -29,7 +30,7 @@ class PixelShuffler(Layer):
     # pylint: disable=C0103
     def __init__(self, size=(2, 2), data_format=None, **kwargs):
         super(PixelShuffler, self).__init__(**kwargs)
-        self.data_format = K.normalize_data_format(data_format)
+        self.data_format = KO.normalize_data_format(data_format)
         self.size = conv_utils.normalize_tuple(size, 2, 'size')
 
     def call(self, inputs, **kwargs):
