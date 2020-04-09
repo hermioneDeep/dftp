@@ -255,7 +255,6 @@ class ModelBase():
 
     def build(self):
         with strategy.scope:
-        """ Build the model. Override for custom build methods """
             self.add_networks()
             self.load_models(swapped=False)
             inputs = self.get_inputs()
@@ -276,7 +275,6 @@ class ModelBase():
 
     def get_inputs(self):
         with strategy.scope():
-            """ Return the inputs for the model """
             logger.debug("Getting inputs")
             inputs = [Input(shape=self.input_shape, name="face_in")]
             output_network = [network for network in self.networks.values() if network.is_output][0]
