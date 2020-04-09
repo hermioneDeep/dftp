@@ -1,4 +1,5 @@
 import sys
+import tensorflow as tf
 training_distributed=sys.modules[sys.modules[tf.keras.models.Model.__module__].training_distributed.fit_distributed.__module__]
   
 def tpu_init_train_model(model,x,y):
