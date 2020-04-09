@@ -30,6 +30,14 @@ from plugins.train._config import Config
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 _CONFIG = None
 
+try:
+    resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='grpc://' + os.environ['COLAB_TPU_ADDR'])
+    tf.config.experimental_connect_to_cluster(resolver)
+    # This is the TPU initialization code that has to be at the beginning.
+    tf.tpu.experimental.initialize_tpu_system(resolver)
+    strategy = tf.distribute.experimental.TPUStrategy(resolver)
+except:
+    print("No pizza today(((")
 
 class ModelBase():
     """ Base class that all models should inherit from """
