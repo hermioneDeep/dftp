@@ -10,6 +10,7 @@ import sys
 import time
 
 from concurrent import futures
+from tensorflow.contrib import tpu as contrib_tpu
 import tensorflow as tf
 import tensorflow.keras
 from tensorflow.keras import losses
@@ -29,15 +30,6 @@ from plugins.train._config import Config
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 _CONFIG = None
-
-try:
-    resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='grpc://' + os.environ['COLAB_TPU_ADDR'])
-    tf.config.experimental_connect_to_cluster(resolver)
-    # This is the TPU initialization code that has to be at the beginning.
-    tf.tpu.experimental.initialize_tpu_system(resolver)
-    strategy = tf.distribute.experimental.TPUStrategy(resolver)
-except:
-    print("No pizza today(((")
 
 class ModelBase():
     """ Base class that all models should inherit from """
@@ -373,8 +365,11 @@ class ModelBase():
         optimizer = self.get_optimizer(lr=learning_rate, beta_1=0.5, beta_2=0.999)
         for side, model in self.predictors.items():
             loss = Loss(model.inputs, model.outputs)
-            with strategy.scope():
-                model.compile(optimizer='adam', loss=loss.funcs)
+            strategy = contrib_tpu.TPUDistributionStrategy(
+                    contrib_cluster_resolver.TPUClusterResolver(tpu=flags.FLAGS.tpu))
+            model = contrib_tpu.keras_to_tpu_model(
+            model, strategy=strategy)
+            model.compile(optimizer='adam', loss=loss.funcs)
             if initialize:
                 self.state.add_session_loss_names(side, loss.names)
                 self.history[side] = list()
