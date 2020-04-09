@@ -860,8 +860,11 @@ class NNMeta():
         if backup_func:
             backup_func(fullpath)
         logger.debug("Saving model: '%s'", fullpath)
-        self.weights = self.network.get_weights()
-        self.network.save(fullpath)
+        try:
+            self.weights = self.network.get_weights()
+            self.network.save(fullpath)
+        except:
+            print("cannot save")
 
     def convert_legacy_weights(self):
         """ Convert legacy weights files to hold the model topology """
