@@ -392,19 +392,20 @@ class ModelBase():
             logger.debug("Compiled Predictors. Losses: %s", loss.names)
 
     def get_optimizer(self, lr=5e-5, beta_1=0.5, beta_2=0.999):  # pylint: disable=invalid-name
-        with strategy.scope():
-            opt_kwargs = dict(lr=lr, beta_1=beta_1, beta_2=beta_2)
-            if (self.config.get("clipnorm", False) and
-                    True):
-                # NB: Clipnorm is ballooning VRAM usage, which is not expected behavior
-                # and may be a bug in Keras/TF.
-                # PlaidML has a bug regarding the clipnorm parameter
-                # See: https://github.com/plaidml/plaidml/issues/228
-                # Workaround by simply removing it.
-                # TODO: Remove this as soon it is fixed in PlaidML.
-                opt_kwargs["clipnorm"] = 1.0
-            logger.debug("Optimizer kwargs: %s", opt_kwargs)
-            return Adam(**opt_kwargs, cpu_mode=self.vram_savings.optimizer_savings)
+        with strategy.scope()
+        """ Build and return Optimizer """
+        opt_kwargs = dict(lr=lr, beta_1=beta_1, beta_2=beta_2)
+        if (self.config.get("clipnorm", False) and
+                True):
+            # NB: Clipnorm is ballooning VRAM usage, which is not expected behavior
+            # and may be a bug in Keras/TF.
+            # PlaidML has a bug regarding the clipnorm parameter
+            # See: https://github.com/plaidml/plaidml/issues/228
+            # Workaround by simply removing it.
+            # TODO: Remove this as soon it is fixed in PlaidML.
+            opt_kwargs["clipnorm"] = 1.0
+        logger.debug("Optimizer kwargs: %s", opt_kwargs)
+        return Adam(**opt_kwargs, cpu_mode=self.vram_savings.optimizer_savings)
 
     def converter(self, swap):
         """ Converter for autoencoder models """
