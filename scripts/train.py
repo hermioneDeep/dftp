@@ -239,23 +239,22 @@ class Train():
         tf.config.experimental_connect_to_host(resolver.master())
         tf.tpu.experimental.initialize_tpu_system(resolver)
         strategy = tf.distribute.experimental.TPUStrategy(resolver)
-        with strategy.scope():
-            model = PluginLoader.get_model(self.trainer_name)(
-                model_dir,
-                gpus=self._args.gpus,
-                configfile=configfile,
-                snapshot_interval=self._args.snapshot_interval,
-                no_logs=self._args.no_logs,
-                warp_to_landmarks=self._args.warp_to_landmarks,
-                augment_color=augment_color,
-                no_flip=self._args.no_flip,
-                training_image_size=self._image_size,
-                alignments_paths=self._alignments_paths,
-                preview_scale=self._args.preview_scale,
-                pingpong=self._args.pingpong,
-                memory_saving_gradients=self._args.memory_saving_gradients,
-                optimizer_savings=self._args.optimizer_savings,
-                predict=False)
+        model = PluginLoader.get_model(self.trainer_name)(
+            model_dir,
+            gpus=self._args.gpus,
+            configfile=configfile,
+            snapshot_interval=self._args.snapshot_interval,
+            no_logs=self._args.no_logs,
+            warp_to_landmarks=self._args.warp_to_landmarks,
+            augment_color=augment_color,
+            no_flip=self._args.no_flip,
+            training_image_size=self._image_size,
+            alignments_paths=self._alignments_paths,
+            preview_scale=self._args.preview_scale,
+            pingpong=self._args.pingpong,
+            memory_saving_gradients=self._args.memory_saving_gradients,
+            optimizer_savings=self._args.optimizer_savings,
+            predict=False)
         logger.debug("Loaded Model")
         return model
 
