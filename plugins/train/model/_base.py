@@ -366,12 +366,6 @@ class ModelBase():
         for side, model in self.predictors.items():
             loss = Loss(model.inputs, model.outputs)
             model.compile(optimizer='adam', loss=loss.funcs)
-            TPU_WORKER = 'grpc://' + os.environ['COLAB_TPU_ADDR']
-            tf.logging.set_verbosity(tf.logging.INFO)
-            model = tf.contrib.tpu.keras_to_tpu_model(
-                model,
-                strategy=tf.contrib.tpu.TPUDistributionStrategy(
-                tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER)))
             if initialize:
                 self.state.add_session_loss_names(side, loss.names)
                 self.history[side] = list()
