@@ -1,0 +1,4 @@
+04/07/2020 00:17:22 MainProcess     MainThread      logger          log_setup                 INFO     Log level set to: INFO
+04/07/2020 00:17:25 MainProcess     MainThread      extract         __init__                  INFO     Output Directory: /content/faceswap/ban
+04/07/2020 00:17:25 MainProcess     MainThread      cli             execute_script            ERROR    The location '/content/faceswap/image.png' does not exist
+04/07/2020 00:17:25 MainProcess     MainThread      cli             execute_script            INFO     To get more information on this error see the crash report written to '/content/faceswap/crash_report.2020.04.07.001725902226.log'
