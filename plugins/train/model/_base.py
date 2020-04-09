@@ -146,6 +146,7 @@ class ModelBase():
     @property
     def config(self):
         with strategy.scope:
+            """ Return config dict for current plugin """
             global _CONFIG  # pylint: disable=global-statement
             if not _CONFIG:
                 model_name = self.config_section
