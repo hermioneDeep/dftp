@@ -59,7 +59,7 @@ from lib.image import read_image_hash_batch
 from lib.training_data import TrainingDataGenerator
 from lib.utils import FaceswapError, get_folder, get_image_paths
 from plugins.train._config import Config
-from tpu_support.tpu import tpu_train_on_batch
+#from tpu_support.tpu import tpu_train_on_batch
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -422,7 +422,7 @@ class Batcher():
         logger.trace("Training one step: (side: %s)", self._side)
         model_inputs, model_targets = self._get_next()
         try:
-            self._model.predictors[self._side].fit(model_inputs, model_targets, epochs = 10)
+            self._model.predictors[self._side].fit(model_inputs, model_targets, epochs = 10, batch_size = 8)
             #loss = self._model.predictors[self._side].train_on_batch(model_inputs, model_targets)
             #tpu_model = self._model.predictors[self._side]
             #loss = tpu_train_on_batch(tpu_model, model_inputs, model_targets)
