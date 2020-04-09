@@ -371,13 +371,13 @@ class ModelBase():
         logger.debug("Compiling Predictors")
         learning_rate = self.config.get("learning_rate", 5e-5)
         optimizer = self.get_optimizer(lr=learning_rate, beta_1=0.5, beta_2=0.999)
-        with strategy.scope():
-            for side, model in self.predictors.items():
-                loss = Loss(model.inputs, model.outputs)
+        for side, model in self.predictors.items():
+            loss = Loss(model.inputs, model.outputs)
+            with strategy.scope():
                 model.compile(optimizer='adam', loss=loss.funcs)
-                if initialize:
-                    self.state.add_session_loss_names(side, loss.names)
-                    self.history[side] = list()
+            if initialize:
+                self.state.add_session_loss_names(side, loss.names)
+                self.history[side] = list()
         logger.debug("Compiled Predictors. Losses: %s", loss.names)
 
     def get_optimizer(self, lr=5e-5, beta_1=0.5, beta_2=0.999):  # pylint: disable=invalid-name
