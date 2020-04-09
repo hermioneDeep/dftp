@@ -116,6 +116,7 @@ class Model(ModelBase):
         var_x = Reshape((lowest_dense_res, lowest_dense_res, self.ae_dims))(var_x)
         var_x = self.blocks.upscale(var_x, self.ae_dims)
         gpu_model = KerasModel(input_, var_x)
+        gpu_model.build()
         return gpu_model
 
     def encoder_liae(self):
@@ -196,5 +197,6 @@ class Model(ModelBase):
                                        name="mask_out")
             outputs.append(var_y)
         gpu_model = KerasModel(input_, outputs=outputs)
+        gpu_model.build()
         return gpu_model
         
