@@ -792,8 +792,12 @@ class NNMeta():
         self.network = network
         self.is_output = is_output
         self.network._name = self.name
-        self.config = network.get_config()  # For pingpong restore
-        self.weights = network.get_weights()  # For pingpong restore
+        try:
+            self.config = network.get_config()  # For pingpong restore TODO bring it back
+            self.weights = network.get_weights()  # For pingpong restore TODO for Tpu
+        except:
+            print("dabebiii")
+
         logger.debug("Initialized %s", self.__class__.__name__)
 
     @property
