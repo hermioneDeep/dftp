@@ -10,7 +10,7 @@ import sys
 import time
 
 from concurrent import futures
-
+import tensorflow as tf
 import tensorflow.keras
 from tensorflow.keras import losses
 from tensorflow.keras import backend as K
