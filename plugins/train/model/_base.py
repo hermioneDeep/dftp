@@ -268,18 +268,17 @@ class ModelBase():
         self.compile_predictors(initialize=True)
 
     def get_inputs(self):
-        with strategy.scope():
-            """ Return the inputs for the model """
-            logger.debug("Getting inputs")
-            inputs = [Input(shape=self.input_shape, name="face_in")]
-            output_network = [network for network in self.networks.values() if network.is_output][0]
-            if self.feed_mask:
-                # TODO penalized mask doesn't have a mask output, so we can't use output shapes
-                # mask should always be last output..this needs to be a rule
-                mask_shape = output_network.output_shapes[-1]
-                inputs.append(Input(shape=(mask_shape[1:-1] + (1,)), name="mask_in"))
-            logger.debug("Got inputs: %s", inputs)
-            return inputs
+        """ Return the inputs for the model """
+        logger.debug("Getting inputs")
+        inputs = [Input(shape=self.input_shape, name="face_in")]
+        output_network = [network for network in self.networks.values() if network.is_output][0]
+        if self.feed_mask:
+            # TODO penalized mask doesn't have a mask output, so we can't use output shapes
+            # mask should always be last output..this needs to be a rule
+            mask_shape = output_network.output_shapes[-1]
+            inputs.append(Input(shape=(mask_shape[1:-1] + (1,)), name="mask_in"))
+        logger.debug("Got inputs: %s", inputs)
+        return inputs
 
     def build_autoencoders(self, inputs):
         """ Override for Model Specific autoencoder builds
@@ -296,49 +295,46 @@ class ModelBase():
         raise NotImplementedError
 
     def load_state_info(self):
-        with strategy.scope():
-            """ Load the input shape from state file if it exists """
-            logger.debug("Loading Input Shape from State file")
-            if not self.state.inputs:
-                logger.debug("No input shapes saved. Using model config")
-                return
-            if not self.state.face_shapes:
-                logger.warning("Input shapes stored in State file, but no matches for 'face'."
-                            "Using model config")
-                return
-            input_shape = self.state.face_shapes[0]
-            logger.debug("Setting input shape from state file: %s", input_shape)
-            self.input_shape = input_shape
+        """ Load the input shape from state file if it exists """
+        logger.debug("Loading Input Shape from State file")
+        if not self.state.inputs:
+            logger.debug("No input shapes saved. Using model config")
+            return
+        if not self.state.face_shapes:
+            logger.warning("Input shapes stored in State file, but no matches for 'face'."
+                           "Using model config")
+            return
+        input_shape = self.state.face_shapes[0]
+        logger.debug("Setting input shape from state file: %s", input_shape)
+        self.input_shape = input_shape
 
     def add_network(self, network_type, side, network, is_output=False):
-        with strategy.scope():
-            """ Add a NNMeta object """
-            logger.debug("network_type: '%s', side: '%s', network: '%s', is_output: %s",
-                        network_type, side, network, is_output)
-            filename = "{}_{}".format(self.name, network_type.lower())
-            name = network_type.lower()
-            if side:
-                side = side.lower()
-                filename += "_{}".format(side.upper())
-                name += "_{}".format(side)
-            filename += ".h5"
-            logger.debug("name: '%s', filename: '%s'", name, filename)
-            self.networks[name] = NNMeta(str(self.model_dir / filename),
-                                        network_type,
-                                        side,
-                                        network,
-                                        is_output)
+        """ Add a NNMeta object """
+        logger.debug("network_type: '%s', side: '%s', network: '%s', is_output: %s",
+                     network_type, side, network, is_output)
+        filename = "{}_{}".format(self.name, network_type.lower())
+        name = network_type.lower()
+        if side:
+            side = side.lower()
+            filename += "_{}".format(side.upper())
+            name += "_{}".format(side)
+        filename += ".h5"
+        logger.debug("name: '%s', filename: '%s'", name, filename)
+        self.networks[name] = NNMeta(str(self.model_dir / filename),
+                                     network_type,
+                                     side,
+                                     network,
+                                     is_output)
 
     def add_predictor(self, side, model):
-        with strategy.scope():
-            """ Add a predictor to the predictors dictionary """
-            logger.debug("Adding predictor: (side: '%s', model: %s)", side, model)
-            if self.gpus > 1:
-                logger.debug("Converting to multi-gpu: side %s", side)
-                model = multi_gpu_model(model, self.gpus)
-            self.predictors[side] = model
-            if not self.state.inputs:
-                self.store_input_shapes(model)
+        """ Add a predictor to the predictors dictionary """
+        logger.debug("Adding predictor: (side: '%s', model: %s)", side, model)
+        if self.gpus > 1:
+            logger.debug("Converting to multi-gpu: side %s", side)
+            model = multi_gpu_model(model, self.gpus)
+        self.predictors[side] = model
+        if not self.state.inputs:
+            self.store_input_shapes(model)
 
     def store_input_shapes(self, model):
         """ Store the input and output shapes to state """
@@ -372,17 +368,17 @@ class ModelBase():
 
     def compile_predictors(self, initialize=True):
         """ Compile the predictors """
-        with strategy.scope():
-            logger.debug("Compiling Predictors")
-            learning_rate = self.config.get("learning_rate", 5e-5)
-            optimizer = self.get_optimizer(lr=learning_rate, beta_1=0.5, beta_2=0.999)
-            for side, model in self.predictors.items():
-                loss = Loss(model.inputs, model.outputs)
+        logger.debug("Compiling Predictors")
+        learning_rate = self.config.get("learning_rate", 5e-5)
+        optimizer = self.get_optimizer(lr=learning_rate, beta_1=0.5, beta_2=0.999)
+        for side, model in self.predictors.items():
+            loss = Loss(model.inputs, model.outputs)
+            with strategy.scope():
                 model.compile(optimizer='adam', loss=loss.funcs)
-                if initialize:
-                    self.state.add_session_loss_names(side, loss.names)
-                    self.history[side] = list()
-            logger.debug("Compiled Predictors. Losses: %s", loss.names)
+            if initialize:
+                self.state.add_session_loss_names(side, loss.names)
+                self.history[side] = list()
+        logger.debug("Compiled Predictors. Losses: %s", loss.names)
 
     def get_optimizer(self, lr=5e-5, beta_1=0.5, beta_2=0.999):  # pylint: disable=invalid-name
         """ Build and return Optimizer """
