@@ -145,12 +145,13 @@ class ModelBase():
 
     @property
     def config(self):
-        global _CONFIG  # pylint: disable=global-statement
-        if not _CONFIG:
-            model_name = self.config_section
-            logger.debug("Loading config for: %s", model_name)
-            _CONFIG = Config(model_name, configfile=self.configfile).config_dict
-        return _CONFIG
+        with strategy.scope:
+            global _CONFIG  # pylint: disable=global-statement
+            if not _CONFIG:
+                model_name = self.config_section
+                logger.debug("Loading config for: %s", model_name)
+                _CONFIG = Config(model_name, configfile=self.configfile).config_dict
+            return _CONFIG
 
     @property
     def config_changeable_items(self):
