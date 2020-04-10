@@ -222,6 +222,12 @@ class Train():
             sys.exit(0)
         except Exception as err:
             raise err
+    
+    def justTrain(self):
+        sleep(1)
+        model = self._load_model()
+        trainer = self._load_trainer(model)
+        self._run_training_cycle(model, trainer)
 
     def _load_model(self):
         """ Load the model requested for training.
