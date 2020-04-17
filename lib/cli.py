@@ -152,13 +152,13 @@ class ScriptExecutor():
     def setup_amd(loglevel):
         """ Test for plaidml and setup for AMD """
         logger.debug("Setting up for AMD")
-        try:
-            import plaidml  # noqa pylint:disable=unused-import,import-outside-toplevel
-        except ImportError:
-            logger.error("PlaidML not found. Run `pip install plaidml-keras` for AMD support")
-            return False
-        from lib.plaidml_tools import setup_plaidml  # pylint:disable=import-outside-toplevel
-        setup_plaidml(loglevel)
+       # try:
+        #    import plaidml  # noqa pylint:disable=unused-import,import-outside-toplevel
+        #except ImportError:
+        #    logger.error("PlaidML not found. Run `pip install plaidml-keras` for AMD support")
+        #    return False
+        #from lib.plaidml_tools import setup_plaidml  # pylint:disable=import-outside-toplevel
+        #setup_plaidml(loglevel)
         logger.debug("setup up for PlaidML")
         return True
 
