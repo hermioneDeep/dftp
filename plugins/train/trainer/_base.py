@@ -422,7 +422,7 @@ class Batcher():
         logger.trace("Training one step: (side: %s)", self._side)
         model_inputs, model_targets = self._get_next()
         try:
-            self._model.predictors[self._side].fit(model_inputs, model_targets, epochs = 10, batch_size = 32)
+            self._model.predictors[self._side].fit(model_inputs, model_targets, epochs = 1, batch_size = 8)
             #loss = self._model.predictors[self._side].train_on_batch(model_inputs, model_targets)
             #tpu_model = self._model.predictors[self._side]
             #loss = tpu_train_on_batch(tpu_model, model_inputs, model_targets)
